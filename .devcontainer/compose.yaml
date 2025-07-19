@@ -1,0 +1,22 @@
+version: "3"
+services:
+  jupyter:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - PYTHONPATH=/workspace
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../:/workspace
+    # VS Code workaround: Add this if your Docker/WSL setup doesn't recognize runtime correctly
+    command: ["bash", "-c", "sleep infinity"]

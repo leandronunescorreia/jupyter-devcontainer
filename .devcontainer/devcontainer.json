@@ -1,0 +1,60 @@
+{
+	"name": "${localWorkspaceFolderBasename}",
+	"dockerComposeFile": ["compose.yaml"],
+	"service": "jupyter",
+	"workspaceFolder": "/workspace",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// Use base images default CMD.
+	"overrideCommand": false,
+	// Forward Jupyter port locally, mark required.
+	"forwardPorts": [8888],
+	"portsAttributes": {
+		"8888": {
+			"label": "Jupyter",
+			"requireLocalPort": true,
+			"onAutoForward": "ignore"
+		}
+	},
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python3",
+				"python.formatting.provider": "black",
+				"jupyter.jupyterServerType": "local",
+				"jupyter.enablePlotlySupport": true,
+				"jupyter.askForKernelRestart": false,
+				"python.testing.pytestEnabled": true,
+				"python.testing.unittestEnabled": false,
+				"files.exclude": {
+					".coverage": true,
+					".pytest_cache": true,
+					"__pycache__": true
+				}				
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-python.python",
+				"ms-toolsai.jupyter",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"GitHub.copilot",
+				"ms-toolsai.jupyter-keymap",
+				"ms-toolsai.jupyter-renderers",
+				"vscode-icons-team.vscode-icons",
+				"wayou.vscode-todo-highlight",
+				"timonwong.shellcheck"				
+			]
+		}
+	},
+	"mounts": [
+	"source=${localWorkspaceFolder}/.cache,target=/root/.cache,type=bind"
+	],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pip install ipykernel jupyter notebook widgetsnbextension ipywidgets && nvidia-smi"
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
